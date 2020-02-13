@@ -17,22 +17,25 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "controlwindow.hpp"
+#ifndef LCA_CLASSROOM_ACTION
+#define LCA_CLASSROOM_ACTION
 
-#include <QApplication>
 #include <QString>
 
-using namespace std;
-
-int main(int argc,char* argv[])
+class ClassroomAction
 {
-    QApplication app(argc,argv);
+    protected:
     
-    ControlWindow* win=new ControlWindow();
-    win->show();
-    app.exec();
+    QString m_name;
     
-    delete win;
+    public:
     
-    return 0;
-}
+    ClassroomAction();
+    virtual ~ClassroomAction();
+    
+    QString name()
+    {
+        return m_name;
+    }
+};
+#endif

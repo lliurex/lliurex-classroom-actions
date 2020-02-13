@@ -19,20 +19,31 @@
 
 #include "controlwindow.hpp"
 
-#include <QApplication>
-#include <QString>
+#include <QVBoxLayout>
+#include <QPushButton>
 
-using namespace std;
-
-int main(int argc,char* argv[])
+ControlWindow::ControlWindow(): QMainWindow()
 {
-    QApplication app(argc,argv);
+    setWindowTitle("LliureX Classroom Actions");
     
-    ControlWindow* win=new ControlWindow();
-    win->show();
-    app.exec();
+    actions["alpha"]=new ClassroomAction();
+    actions["beta"]=new ClassroomAction();
     
-    delete win;
+    QVBoxLayout *layout = new QVBoxLayout;
     
-    return 0;
+    for (auto kv:actions) {
+        QPushButton* button;
+        
+        button = new QPushButton(kv.second->name());
+        
+        layout->addWidget(button);
+    }
+    
+    setCentralWidget(new QWidget());
+    centralWidget()->setLayout(layout);
+}
+
+ControlWindow::~ControlWindow()
+{
+    
 }
