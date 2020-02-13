@@ -19,9 +19,10 @@
 
 #include "classroomaction.hpp"
 
-ClassroomAction::ClassroomAction()
+ClassroomAction::ClassroomAction(QString file_name)
 {
-    m_name="no name";
+    m_desktop = new KDesktopFile(file_name);
+    m_name=m_desktop->readName();
 }
 
 ClassroomAction::~ClassroomAction()

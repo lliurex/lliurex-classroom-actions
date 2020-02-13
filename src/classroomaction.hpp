@@ -21,16 +21,18 @@
 #define LCA_CLASSROOM_ACTION
 
 #include <QString>
+#include <KDesktopFile>
 
 class ClassroomAction
 {
     protected:
     
     QString m_name;
+    KDesktopFile* m_desktop;
     
     public:
     
-    ClassroomAction();
+    ClassroomAction(QString file_name);
     virtual ~ClassroomAction();
     
     QString name()

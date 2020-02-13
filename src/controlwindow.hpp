@@ -24,12 +24,12 @@
 
 #include <QMainWindow>
 
-#include <map>
+#include <vector>
 
 class ControlWindow: public QMainWindow
 {
     protected:
-    std::map<QString,ClassroomAction*> actions;
+    std::vector<ClassroomAction*> actions;
     
     public:
     

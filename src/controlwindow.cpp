@@ -21,20 +21,30 @@
 
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QDirIterator>
+#include <QDebug>
 
 ControlWindow::ControlWindow(): QMainWindow()
 {
     setWindowTitle("LliureX Classroom Actions");
     
-    actions["alpha"]=new ClassroomAction();
-    actions["beta"]=new ClassroomAction();
+    QDirIterator it(".",QDir::Files);
+    
+    while (it.hasNext()) {
+        QString file_name=it.next();
+        if (file_name.endsWith(".desktop")) {
+            qDebug()<<"* "<<file_name;
+            
+            actions.push_back(new ClassroomAction(file_name));
+        }
+    }
     
     QVBoxLayout *layout = new QVBoxLayout;
     
-    for (auto kv:actions) {
+    for (auto a : actions) {
         QPushButton* button;
         
-        button = new QPushButton(kv.second->name());
+        button = new QPushButton(a->name());
         
         layout->addWidget(button);
     }
