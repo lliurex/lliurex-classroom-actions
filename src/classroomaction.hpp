@@ -28,6 +28,8 @@ class ClassroomAction
     protected:
     
     QString m_name;
+    QString m_exec;
+    QString m_icon;
     KDesktopFile* m_desktop;
     
     public:
@@ -39,5 +41,17 @@ class ClassroomAction
     {
         return m_name;
     }
+    
+    QString exec()
+    {
+        return m_exec;
+    }
+    
+    QString icon()
+    {
+        return m_icon;
+    }
+    
+    void run();
 };
 #endif

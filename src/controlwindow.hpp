@@ -28,6 +28,8 @@
 
 class ControlWindow: public QMainWindow
 {
+    Q_OBJECT
+    
     protected:
     std::vector<ClassroomAction*> actions;
     
@@ -35,6 +37,7 @@ class ControlWindow: public QMainWindow
     
     ControlWindow();
     ~ControlWindow();
+    
 };
 
 #endif

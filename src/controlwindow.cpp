@@ -45,12 +45,19 @@ ControlWindow::ControlWindow(): QMainWindow()
         QPushButton* button;
         
         button = new QPushButton(a->name());
+        qDebug()<<"exec:["<<a->exec()<<"]";
         
         layout->addWidget(button);
+        
+        connect(button, &QPushButton::clicked, [this,a] { 
+            qDebug()<<"run:"<<a->name();
+            a->run();
+        });
     }
     
     setCentralWidget(new QWidget());
     centralWidget()->setLayout(layout);
+    
 }
 
 ControlWindow::~ControlWindow()

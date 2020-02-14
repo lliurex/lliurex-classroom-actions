@@ -19,13 +19,27 @@
 
 #include "classroomaction.hpp"
 
+#include <KConfigGroup>
+#include <QProcess>
+
 ClassroomAction::ClassroomAction(QString file_name)
 {
     m_desktop = new KDesktopFile(file_name);
     m_name=m_desktop->readName();
+    
+    auto group = m_desktop->group("Desktop Entry");
+    m_exec=group.readEntry("Exec","");
 }
 
 ClassroomAction::~ClassroomAction()
 {
     
+}
+
+void ClassroomAction::run()
+{
+    QProcess child;
+    
+    child.setProgram(m_exec);
+    child.startDetached(nullptr);
 }
