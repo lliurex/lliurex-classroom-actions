@@ -58,6 +58,9 @@ ControlWindow::ControlWindow(): QMainWindow()
     setCentralWidget(new QWidget());
     centralWidget()->setLayout(layout);
     
+    systray = new KStatusNotifierItem(this);
+    systray->setIconByName("face-smile");
+    systray->setStatus(KStatusNotifierItem::ItemStatus::Active);
 }
 
 ControlWindow::~ControlWindow()

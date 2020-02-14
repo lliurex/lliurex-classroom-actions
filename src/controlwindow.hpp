@@ -22,6 +22,7 @@
 
 #include "classroomaction.hpp"
 
+#include <KStatusNotifierItem>
 #include <QMainWindow>
 
 #include <vector>
@@ -32,6 +33,8 @@ class ControlWindow: public QMainWindow
     
     protected:
     std::vector<ClassroomAction*> actions;
+    
+    KStatusNotifierItem* systray;
     
     public:
     
