@@ -19,7 +19,10 @@
 
 #include "controlwindow.hpp"
 
+#include <QFrame>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QScrollArea>
 #include <QPushButton>
 #include <QDirIterator>
 #include <QDebug>
@@ -27,6 +30,42 @@
 ControlWindow::ControlWindow(): QMainWindow()
 {
     setWindowTitle("LliureX Classroom Actions");
+    setMaximumHeight(500);
+    
+    QFrame* mainFrame;
+    QVBoxLayout* mainLayout;
+    
+    mainFrame = new QFrame();
+    mainLayout = new QVBoxLayout();
+    mainFrame->setLayout(mainLayout);
+    setCentralWidget(mainFrame);
+    
+    QFrame* desktopsFrame;
+    QVBoxLayout* desktopsLayout;
+    QScrollArea* desktopsScroll;
+    
+    desktopsFrame = new QFrame();
+    //desktopsFrame->setFrameShape(QFrame::StyledPanel);
+    //desktopsFrame->setMaximumHeight(600);
+    //desktopsFrame->setMinimumHeight(100);
+    desktopsLayout = new QVBoxLayout();
+    desktopsScroll = new QScrollArea();
+    desktopsScroll->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
+    desktopsScroll->setWidgetResizable(true);
+    desktopsFrame->setLayout(desktopsLayout);
+    desktopsScroll->setWidget(desktopsFrame);
+    mainLayout->addWidget(desktopsScroll);
+    
+    QFrame* buttonsFrame;
+    QHBoxLayout* buttonsLayout;
+    QPushButton* cancelButton;
+    
+    buttonsFrame = new QFrame();
+    cancelButton = new QPushButton("cancel");
+    buttonsLayout = new QHBoxLayout();
+    buttonsLayout->addWidget(cancelButton);
+    buttonsFrame->setLayout(buttonsLayout);
+    mainLayout->addWidget(buttonsFrame);
     
     QDirIterator it(".",QDir::Files);
     
@@ -39,24 +78,23 @@ ControlWindow::ControlWindow(): QMainWindow()
         }
     }
     
-    QVBoxLayout *layout = new QVBoxLayout;
-    
     for (auto a : actions) {
         QPushButton* button;
+        QIcon icon=QIcon::fromTheme(a->icon());
         
-        button = new QPushButton(a->name());
+        button = new QPushButton(icon,a->name());
+        button->setIconSize(QSize(32,32));
+        
+        qDebug()<<"icon:"<<a->icon();
         qDebug()<<"exec:["<<a->exec()<<"]";
         
-        layout->addWidget(button);
+        desktopsLayout->addWidget(button);
         
         connect(button, &QPushButton::clicked, [this,a] { 
             qDebug()<<"run:"<<a->name();
             a->run();
         });
     }
-    
-    setCentralWidget(new QWidget());
-    centralWidget()->setLayout(layout);
     
     systray = new KStatusNotifierItem(this);
     systray->setIconByName("face-smile");

@@ -26,6 +26,7 @@ ClassroomAction::ClassroomAction(QString file_name)
 {
     m_desktop = new KDesktopFile(file_name);
     m_name=m_desktop->readName();
+    m_icon=m_desktop->readIcon();
     
     auto group = m_desktop->group("Desktop Entry");
     m_exec=group.readEntry("Exec","");
