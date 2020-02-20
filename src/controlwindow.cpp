@@ -19,7 +19,12 @@
 
 #include "controlwindow.hpp"
 
+#include <QApplication>
+#include <QScreen>
+#include <QStyle>
+#include <QDesktopWidget>
 #include <QFrame>
+#include <QDialogButtonBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QScrollArea>
@@ -30,7 +35,15 @@
 ControlWindow::ControlWindow(): QMainWindow()
 {
     setWindowTitle("LliureX Classroom Actions");
-    setMaximumHeight(500);
+    //setMaximumHeight(500);
+    setFixedSize(QSize(400, 550));
+    setWindowFlags(Qt::Dialog);
+    
+    // ehhm... maybe this code needs a best effort
+    QScreen* screen = QApplication::primaryScreen();
+    setGeometry(
+        QStyle::alignedRect(Qt::LeftToRight,Qt::AlignCenter,size(),
+        screen->geometry()));
     
     QFrame* mainFrame;
     QVBoxLayout* mainLayout;
@@ -45,7 +58,7 @@ ControlWindow::ControlWindow(): QMainWindow()
     QScrollArea* desktopsScroll;
     
     desktopsFrame = new QFrame();
-    //desktopsFrame->setFrameShape(QFrame::StyledPanel);
+    desktopsFrame->setFrameShape(QFrame::StyledPanel);
     //desktopsFrame->setMaximumHeight(600);
     //desktopsFrame->setMinimumHeight(100);
     desktopsLayout = new QVBoxLayout();
@@ -56,16 +69,13 @@ ControlWindow::ControlWindow(): QMainWindow()
     desktopsScroll->setWidget(desktopsFrame);
     mainLayout->addWidget(desktopsScroll);
     
-    QFrame* buttonsFrame;
-    QHBoxLayout* buttonsLayout;
-    QPushButton* cancelButton;
+    QDialogButtonBox* buttonBox;
     
-    buttonsFrame = new QFrame();
-    cancelButton = new QPushButton("cancel");
-    buttonsLayout = new QHBoxLayout();
-    buttonsLayout->addWidget(cancelButton);
-    buttonsFrame->setLayout(buttonsLayout);
-    mainLayout->addWidget(buttonsFrame);
+    buttonBox = new QDialogButtonBox(QDialogButtonBox::Cancel);
+    connect(buttonBox,&QDialogButtonBox::clicked, [this](QAbstractButton* button) {
+        this->hide();
+    });
+    mainLayout->addWidget(buttonBox);
     
     QDirIterator it(".",QDir::Files);
     
@@ -84,9 +94,7 @@ ControlWindow::ControlWindow(): QMainWindow()
         
         button = new QPushButton(icon,a->name());
         button->setIconSize(QSize(32,32));
-        
-        qDebug()<<"icon:"<<a->icon();
-        qDebug()<<"exec:["<<a->exec()<<"]";
+        button->setStyleSheet("text-align:left;");
         
         desktopsLayout->addWidget(button);
         
@@ -97,8 +105,9 @@ ControlWindow::ControlWindow(): QMainWindow()
     }
     
     systray = new KStatusNotifierItem(this);
-    systray->setIconByName("face-smile");
+    systray->setIconByName("folder-public");
     systray->setStatus(KStatusNotifierItem::ItemStatus::Active);
+    systray->setCategory(KStatusNotifierItem::ItemCategory::Communications);
 }
 
 ControlWindow::~ControlWindow()

@@ -29,7 +29,6 @@ int main(int argc,char* argv[])
     QApplication app(argc,argv);
     
     ControlWindow* win=new ControlWindow();
-    win->show();
     app.exec();
     
     delete win;
