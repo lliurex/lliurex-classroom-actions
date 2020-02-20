@@ -32,6 +32,20 @@
 #include <QDirIterator>
 #include <QDebug>
 
+using namespace std;
+
+static void loadDesktops(QDirIterator& it,vector<ClassroomAction*>& actions)
+{
+    while (it.hasNext()) {
+        QString file_name=it.next();
+        if (file_name.endsWith(".desktop")) {
+            qDebug()<<"* "<<file_name;
+            
+            actions.push_back(new ClassroomAction(file_name));
+        }
+    }
+}
+
 ControlWindow::ControlWindow(): QMainWindow()
 {
     setWindowTitle("LliureX Classroom Actions");
@@ -77,16 +91,11 @@ ControlWindow::ControlWindow(): QMainWindow()
     });
     mainLayout->addWidget(buttonBox);
     
-    QDirIterator it(".",QDir::Files);
+    QDirIterator localDesktops(".",QDir::Files);
+    loadDesktops(localDesktops,actions);
     
-    while (it.hasNext()) {
-        QString file_name=it.next();
-        if (file_name.endsWith(".desktop")) {
-            qDebug()<<"* "<<file_name;
-            
-            actions.push_back(new ClassroomAction(file_name));
-        }
-    }
+    QDirIterator shareDesktops("/usr/share/lliurex-classroom-actions/actions/",QDir::Files);
+    loadDesktops(shareDesktops,actions);    
     
     for (auto a : actions) {
         QPushButton* button;
@@ -101,6 +110,7 @@ ControlWindow::ControlWindow(): QMainWindow()
         connect(button, &QPushButton::clicked, [this,a] { 
             qDebug()<<"run:"<<a->name();
             a->run();
+            this->hide();
         });
     }
     
