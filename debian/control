@@ -1,0 +1,12 @@
+Source: lliurex-classroom-actions
+Section: misc
+Priority: standard
+Maintainer: Equipo LliureX <lliurex@gva.es>
+Build-Depends: debhelper (>= 7), cmake, extra-cmake-modules, libkf5config-dev, libkf5notifications-dev, qtbase5-dev
+Standards-Version: 3.9.3
+
+Package: lliurex-classroom-actions
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Quick classroom control actions
+ Systray tool with handy classroom control actions
