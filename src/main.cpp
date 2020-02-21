@@ -18,14 +18,37 @@
 */
 
 #include "controlwindow.hpp"
+#include "util.hpp"
 
 #include <QApplication>
 #include <QString>
+
+#include <iostream>
 
 using namespace std;
 
 int main(int argc,char* argv[])
 {
+    vector<string> groups = getUserGroups();
+    
+    bool allowed=false;
+    
+    for (string s:groups) {
+        if (s=="teachers" or s=="admins") {
+            allowed=true;
+            break;
+        }
+    }
+    
+    if (!allowed) {
+        #ifdef NDEBUG
+        cerr<<"User not in teachers or admins group"<<endl;
+        return 1;
+        #else
+        cerr<<"Warning: User not in a valid group"<<endl;
+        #endif
+    }
+    
     QApplication app(argc,argv);
     
     ControlWindow* win=new ControlWindow();

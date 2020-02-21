@@ -49,7 +49,7 @@ static void loadDesktops(QDirIterator& it,vector<ClassroomAction*>& actions)
 ControlWindow::ControlWindow(): QMainWindow()
 {
     setWindowTitle("LliureX Classroom Actions");
-    //setMaximumHeight(500);
+    setWindowIcon(QIcon::fromTheme("folder-public"));
     setFixedSize(QSize(400, 550));
     setWindowFlags(Qt::Dialog);
     
@@ -73,8 +73,6 @@ ControlWindow::ControlWindow(): QMainWindow()
     
     desktopsFrame = new QFrame();
     desktopsFrame->setFrameShape(QFrame::StyledPanel);
-    //desktopsFrame->setMaximumHeight(600);
-    //desktopsFrame->setMinimumHeight(100);
     desktopsLayout = new QVBoxLayout();
     desktopsScroll = new QScrollArea();
     desktopsScroll->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
