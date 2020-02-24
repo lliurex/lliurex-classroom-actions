@@ -10,3 +10,9 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Quick classroom control actions
  Systray tool with handy classroom control actions
+
+Package: lliurex-classroom-actions-epoptes
+Architecture: all
+Depends: python, python3, lliurex-classroom-actions
+Description: Quick epoptes actions
+ Epoptes actions for lliurex-classroom-actions
