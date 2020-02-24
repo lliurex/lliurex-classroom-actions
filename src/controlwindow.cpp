@@ -74,6 +74,7 @@ ControlWindow::ControlWindow(): QMainWindow()
     desktopsFrame = new QFrame();
     desktopsFrame->setFrameShape(QFrame::StyledPanel);
     desktopsLayout = new QVBoxLayout();
+    desktopsLayout->setAlignment(Qt::AlignTop);
     desktopsScroll = new QScrollArea();
     desktopsScroll->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
     desktopsScroll->setWidgetResizable(true);

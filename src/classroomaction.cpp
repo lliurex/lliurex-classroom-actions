@@ -21,6 +21,7 @@
 
 #include <KConfigGroup>
 #include <QProcess>
+#include <QDebug>
 
 ClassroomAction::ClassroomAction(QString file_name)
 {
@@ -41,6 +42,17 @@ void ClassroomAction::run()
 {
     QProcess child;
     
-    child.setProgram(m_exec);
+    QStringList tmp = m_exec.split(' ');
+    QStringList args;
+    
+    for (size_t n=1;n<tmp.size();n++) {
+        args.append(tmp[n]);
+    }
+    qDebug()<<m_exec;
+    qDebug()<<tmp[0];
+    qDebug()<<args;
+    
+    child.setArguments(args);
+    child.setProgram(tmp[0]);
     child.startDetached(nullptr);
 }
