@@ -5,6 +5,7 @@ import time
 import sys
 import epoptes
 import random
+import socket
 
 
 from twisted.internet import reactor
@@ -15,13 +16,12 @@ from epoptes.common import config
 
 
 
-DEBUG=False
+DEBUG=True
 UNKNOWN=None
 AVAILABLE_COMMANDS=["execute","info","background","logout","reboot","shutdown","lock_screen","unlock_screen"]
 ROOT_COMMANDS=["reboot","shutdown"]
 
 def dprint(msg):
-	
 	if DEBUG:
 		print("[EpoptesCore] %s"%msg)
 
@@ -39,12 +39,25 @@ class EpoptesCore:
 		self.called_clients=[]
 		self.current_state=0
 		self.expected_state=UNKNOWN
-		self.command=command
+		self.command=command.strip(" ")
 		self.daemon=None
 		self.t_client=ClientCreator(reactor, epoptes.daemon.uiconnection.Daemon,self).connectTCP("server",10000)
+		self.own_ip=self.get_own_ip()
 		reactor.run()
 	
 	#def __init__
+	
+	def get_own_ip(self):
+		
+		try:
+			s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+			s.connect(("server",80))
+			ip,port=s.getsockname()
+			return ip
+		except Expcetion as e:
+			dprint(e)
+		
+	#def get_own_ip
 	
 	def connected(self,daemon):
 
@@ -100,7 +113,7 @@ class EpoptesCore:
 		dprint(client_data)
 
 		client="%s:%s"%(client_data["user"],client_data["ip"])
-		if client not in self.called_clients and client_data["uid"]!="0":
+		if client not in self.called_clients and client_data["uid"]!="0" and client_data["ip"]!=self.own_ip:
 			
 			self.called_clients.append(client)
 			dprint("Calling command '%s'..."%self.command)
@@ -109,8 +122,8 @@ class EpoptesCore:
 			# READ RETURN CODE
 			self.d.addCallback(lambda data:self.command_executed(data))
 			
-		elif client not in self.called_clients and client_data["uid"]=="0" and self.command in ROOT_COMMANDS:
-			
+		elif client not in self.called_clients and client_data["uid"]=="0" and client_data["ip"]!=self.own_ip and self.command in ROOT_COMMANDS:
+
 			self.called_clients.append(client)
 			dprint("Calling command '%s'..."%self.command)
 			# CLIENT CALL
