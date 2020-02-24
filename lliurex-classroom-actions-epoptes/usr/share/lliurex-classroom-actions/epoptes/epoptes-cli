@@ -18,6 +18,7 @@ from epoptes.common import config
 DEBUG=False
 UNKNOWN=None
 AVAILABLE_COMMANDS=["execute","info","background","logout","reboot","shutdown","lock_screen","unlock_screen"]
+ROOT_COMMANDS=["reboot","shutdown"]
 
 def dprint(msg):
 	
@@ -107,6 +108,16 @@ class EpoptesCore:
 			self.d.addCallback(lambda data:self.daemon.command(handle,self.command))
 			# READ RETURN CODE
 			self.d.addCallback(lambda data:self.command_executed(data))
+			
+		elif client not in self.called_clients and client_data["uid"]=="0" and self.command in ROOT_COMMANDS:
+			
+			self.called_clients.append(client)
+			dprint("Calling command '%s'..."%self.command)
+			# CLIENT CALL
+			self.d.addCallback(lambda data:self.daemon.command(handle,self.command))
+			# READ RETURN CODE
+			self.d.addCallback(lambda data:self.command_executed(data))
+			
 		else:
 			self.expected_state-=1
 			dprint("Updated expected state to %s"%self.expected_state)
@@ -171,7 +182,5 @@ if __name__=="__main__":
 		usage()
 		sys.exit(1)
 	
-	
-	print(args)
 	e=EpoptesCore("%s %s"%(command,args))
 	
