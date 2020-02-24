@@ -1,1 +1,2 @@
-lliurex-classroom-actions-epoptes/*	/
+usr/bin/llx-classroom-actions	/usr/bin
+etc/xdg/autostart/*			/etc/xdg/autostart
