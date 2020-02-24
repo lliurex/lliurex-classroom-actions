@@ -1,0 +1,177 @@
+#!/usr/bin/python2.7
+
+import threading
+import time
+import sys
+import epoptes
+import random
+
+
+from twisted.internet import reactor
+from twisted.internet.protocol import ClientCreator
+
+from epoptes.daemon import uiconnection
+from epoptes.common import config
+
+
+
+DEBUG=False
+UNKNOWN=None
+AVAILABLE_COMMANDS=["execute","info","background","logout","reboot","shutdown","lock_screen","unlock_screen"]
+
+def dprint(msg):
+	
+	if DEBUG:
+		print("[EpoptesCore] %s"%msg)
+
+def usage():
+	
+	print("epoptes-cli COMMAND [ARGS]")
+	print("COMMANDS:")
+	for c in AVAILABLE_COMMANDS:
+		print("\t%s"%c)
+
+class EpoptesCore:
+	
+	def __init__(self,command):
+	
+		self.called_clients=[]
+		self.current_state=0
+		self.expected_state=UNKNOWN
+		self.command=command
+		self.daemon=None
+		self.t_client=ClientCreator(reactor, epoptes.daemon.uiconnection.Daemon,self).connectTCP("server",10000)
+		reactor.run()
+	
+	#def __init__
+	
+	def connected(self,daemon):
+
+		self.daemon=daemon
+		self.process_call()
+
+	#def connected
+	
+	
+	def process_call(self):
+		
+		#STEP 1 - Client list callback
+		self.d=self.daemon.enumerateClients().addCallback(self._parse_client_list)
+		
+	#def get_clients
+
+	
+	def _parse_client_list(self,handles):
+		
+		dprint("Got client list...")
+		dprint(handles)
+		
+		if len(handles)==0:
+			reactor.stop()
+		
+		self.current_state=1
+		self.expected_state=self.current_state+(len(handles)*2)
+		dprint("Expected state = %s"%self.expected_state)
+			
+		for handle in handles:
+			# STEP 2 - Get client info
+			self.d.addCallback(lambda data,h=handle:self.daemon.command(h,u"info"))
+			# STEP 3 - Parse client info
+			self.d.addCallback(lambda data,h=handle:self._parse_client_info(h,data))
+			
+	#def _parse_clients
+	
+	
+	def _parse_client_info(self,handle,data):
+
+		dprint("Got %s info..."%handle)
+		client_data={}
+
+		for line in data.split("\n"):
+			if len(line)>0:
+				try:
+					key,value=line.split("=")
+					client_data[key]=value
+				except Exception as e:
+					dprint(e)
+
+		# STEP 3 - Execute whatever we want
+		dprint(client_data)
+
+		client="%s:%s"%(client_data["user"],client_data["ip"])
+		if client not in self.called_clients and client_data["uid"]!="0":
+			
+			self.called_clients.append(client)
+			dprint("Calling command '%s'..."%self.command)
+			# CLIENT CALL
+			self.d.addCallback(lambda data:self.daemon.command(handle,self.command))
+			# READ RETURN CODE
+			self.d.addCallback(lambda data:self.command_executed(data))
+		else:
+			self.expected_state-=1
+			dprint("Updated expected state to %s"%self.expected_state)
+			
+		self.current_state+=1
+		self.check_if_exit()
+	
+	#def _parse_client_info
+	
+	def command_executed(self,data):
+		
+		dprint("Got return code")
+		self.current_state+=1
+		self.check_if_exit()
+		
+	#def execute_command
+	
+
+	def process_watcher(self):
+		
+		t=threading.Thread(target=self._deferred_watcher)
+		t.daemon=True
+		t.start()
+
+	def _deferred_watcher(self):
+		
+		dprint("Starting watcher...")
+		
+		while True:
+			
+			if self.current_state >= self.expected_state:
+				dprint("Exiting...")
+				break
+			
+			dprint("Sleeping...")
+			time.sleep(1)
+		
+		dprint("We are exiting...")
+
+	
+	def check_if_exit(self):
+		
+		if self.current_state >= self.expected_state:
+			dprint("Reached expected state. Exiting...")
+			reactor.stop()
+			
+	#def check_if_exit
+
+
+#class EpoptesCore
+
+if __name__=="__main__":
+
+	try:
+		command=sys.argv[1]
+		args=" ".join(sys.argv[2:])
+	except Exception as e:
+		usage()
+
+	
+	if command not in AVAILABLE_COMMANDS:
+		usage()
+		sys.exit(1)
+	
+	
+	print(args)
+	e=EpoptesCore("%s %s"%(command,args))
+	

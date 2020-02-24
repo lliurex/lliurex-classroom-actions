@@ -1,0 +1,7 @@
+[SETUP]
+type=python
+path=NecosLiteServer.py
+class=NecosLiteServer
+[METHODS]
+execute_function=sudo,admins,teachers
+execute_epoptes_action=sudo,admins,teachers
