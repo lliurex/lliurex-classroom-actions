@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=Shutdown clients
+Name[en]=Shutdown clients
+Name[es]=Apagar clientes
+Name[ca_ES]=Apagar clientes
+Name[ca_ES.UTF-8@valencia]=Apagar clientes
+Name[ca_ES@valencia]=Apagar clientes
+Name[ca]=Apagar clientes
+Exec=/usr/share/lliurex-classroom-actions/epoptes/epoptes-manager lock_screen
+Terminal=false
+Icon=epoptes
+Type=Application
+NoDisplay=false
