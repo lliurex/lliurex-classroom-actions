@@ -1,13 +1,13 @@
 [Desktop Entry]
 Version=1.0
 Encoding=UTF-8
-Name=Shutdown clients
-Name[en]=Shutdown clients
-Name[es]=Apagar clientes
-Name[ca_ES]=Apagar clientes
-Name[ca_ES.UTF-8@valencia]=Apagar clientes
-Name[ca_ES@valencia]=Apagar clientes
-Name[ca]=Apagar clientes
+Name=Reboot clients
+Name[en]=Reboot clients
+Name[es]=Reiniciar clientes
+Name[ca_ES]=Reboot clients
+Name[ca_ES.UTF-8@valencia]=Reboot clients
+Name[ca_ES@valencia]=Reboot clients
+Name[ca]=Reboot clients
 Exec=/usr/share/lliurex-classroom-actions/epoptes/epoptes-manager reboot
 Terminal=false
 Icon=epoptes

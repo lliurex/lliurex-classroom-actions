@@ -1,13 +1,13 @@
 [Desktop Entry]
 Version=1.0
 Encoding=UTF-8
-Name=Shutdown clients
-Name[en]=Shutdown clients
-Name[es]=Apagar clientes
-Name[ca_ES]=Apagar clientes
-Name[ca_ES.UTF-8@valencia]=Apagar clientes
-Name[ca_ES@valencia]=Apagar clientes
-Name[ca]=Apagar clientes
+Name=Close session on clients
+Name[en]=Close session on clients
+Name[es]=Cerrar sesión en clientes
+Name[ca_ES]=Close session on clients
+Name[ca_ES.UTF-8@valencia]=Close session on clients
+Name[ca_ES@valencia]=Close session on clients
+Name[ca]=Close session on clients
 Exec=/usr/share/lliurex-classroom-actions/epoptes/epoptes-manager logout
 Terminal=false
 Icon=epoptes
