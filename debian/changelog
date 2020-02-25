@@ -1,3 +1,9 @@
+lliurex-classroom-actions (1.1.0.1) bionic; urgency=medium
+
+  * Setting NDEBUG cmake flag at build
+
+ -- Enrique Medina Gremaldos <quiqueiii@gmail.com>  Tue, 25 Feb 2020 13:52:18 +0100
+
 lliurex-classroom-actions (1.1.0.0) bionic; urgency=medium
 
   * Master tag: f76361994caa9e6f64e21dce9a80ef104224d9f0
