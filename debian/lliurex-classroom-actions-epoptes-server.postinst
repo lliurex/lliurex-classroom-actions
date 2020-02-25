@@ -6,6 +6,7 @@ case "$1" in
    configure)
 
         n4d-modules enable-plugin /etc/n4d/conf.d/NecosLiteServer || true
+	chmod 700 /usr/share/lliurex-classroom-actions/epoptes/epoptes-cli || true
 
    ;;
 
