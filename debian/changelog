@@ -1,3 +1,10 @@
+lliurex-classroom-actions (1.1.0.0) bionic; urgency=medium
+
+  * Master tag: f76361994caa9e6f64e21dce9a80ef104224d9f0
+  * Added some epoptes actions
+
+ -- Enrique Medina Gremaldos <quiqueiii@gmail.com>  Tue, 25 Feb 2020 09:47:40 +0100
+
 lliurex-classroom-actions (1.0.0.0) bionic; urgency=medium
 
   * Master tag: 78f53ef9bcde0cef36dea0702fe50d4b7f9ecfd3
