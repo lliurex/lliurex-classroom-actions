@@ -16,3 +16,10 @@ Architecture: all
 Depends: python, python3, lliurex-classroom-actions
 Description: Quick epoptes actions
  Epoptes actions for lliurex-classroom-actions
+
+Package: lliurex-classroom-actions-epoptes-server
+Architecture: all
+Depends: python, python3, lliurex-classroom-actions
+Description: Quick epoptes actions
+ Epoptes actions for lliurex-classroom-actions.
+ Contains epoptes-cli and n4d plugin to access it
