@@ -1,3 +1,10 @@
+lliurex-classroom-actions (1.2.0.0) bionic; urgency=medium
+
+  * Master tag: f0b15135a0b432dc9781d6dbd4da1ef58e79687a
+  * No longer executes epoptes call on client requesting said call
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Mon, 02 Mar 2020 16:43:50 +0100
+
 lliurex-classroom-actions (1.1.0.1) bionic; urgency=medium
 
   * Setting NDEBUG cmake flag at build
