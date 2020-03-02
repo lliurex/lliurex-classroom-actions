@@ -9,7 +9,7 @@ import ssl
 import os
 import sys
 
-DEBUG=True
+DEBUG=False
 
 def dprint(data):
 	if DEBUG:
@@ -213,7 +213,8 @@ class EpoptesActions:
 		if self.n4dl.ticket!=None:
 			auth=(self.n4dl.user,self.n4dl.ticket)
 			action=" ".join(action)
-			ret=self.n4dl.client.execute_epoptes_action(auth,"NecosLiteServer",action)
+			ip="" # autocompleted in n4d server
+			ret=self.n4dl.client.execute_epoptes_action(auth,"NecosLiteServer",ip,action)
 			dprint(ret)
 		
 	#def run_action

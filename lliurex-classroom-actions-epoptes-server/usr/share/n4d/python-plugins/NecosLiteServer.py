@@ -99,10 +99,13 @@ class NecosLiteServer:
 	#def save_variable
 	
 	
-	def execute_epoptes_action(self,action):
+	def execute_epoptes_action(self,ip,action):
 		
+		if type(ip) != str:
+			ip=""
+
 		objects["EpoptesServer"].register_ip("127.0.0.1")
-		command="%s %s"%(self.epoptes_cli,action)
+		command="IP_FILTER=%s %s %s"%(ip,self.epoptes_cli,action)
 		p=multiprocessing.Process(target=os.system,args=(command,))
 		p.daemon=True
 		p.start()
